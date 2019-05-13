@@ -1,0 +1,31 @@
+.mybg{
+  background-color: #50a475;
+}
+.adbg{
+  background-color: mediumpurple;
+}
+#sticky-sidebar{
+  height: 100vh;
+}
+.mybg{
+  background-color: rgb(66, 127, 197);
+}
+/* .adbg{
+  background-color: mediumpurple;
+} */
+#sticky-sidebar{
+  height: 100vh;
+}
+
+div.container-fluid{
+  margin-top: -3.3%;
+  height: auto;
+  background-image: url('../../assets/img/wall.jpg');
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  min-height: 757px;
+  height: auto;
+  overflow: auto;
+}

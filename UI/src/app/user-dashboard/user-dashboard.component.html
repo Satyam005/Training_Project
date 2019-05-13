@@ -1,0 +1,260 @@
+<div class="sticky-top">
+  <nav class="navbar navbar-expand navbar-dark bg-dark p-3">
+    <a routerLink="/" class="navbar-brand"><span class="h3">DIY POPUPS</span></a>
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/"><i class="fas fa-home fa-2x"></i></a>
+      </li>
+    </ul>
+    <ul class="navbar-nav">
+      <a class="nav-link"  role="button" style="cursor: pointer;" aria-haspopup="true" aria-expanded="false" (click)="getAllAds()">
+          All Ads
+        </a>
+      <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"  role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Category
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <!--<a *ngFor="let cat of categoryList" class="dropdown-item" [routerLink]="['advt', cat]" >{{cat}}</a>-->
+            <a *ngFor="let cat of categoryList" class="dropdown-item" (click)="filter(cat)" style="cursor: pointer;">{{cat}}</a>
+          </div>
+        </li>
+
+
+    <li class="nav-item">
+      <a class="nav-link" (click)="logout()" style="cursor: pointer;"><em class="fas fa-power-off fa-2x"></em></a>
+    </li>
+  </ul>
+  </nav>
+</div>
+
+<div class="container-fluid bg-light">
+  <div class="row">
+
+    <div class="col-2 bg-dark position-fixed" id="sticky-sidebar">
+      <div class="card bg-dark shadow text-center mt-5">
+        <div class="card-body">
+          <div class="card-text">
+            <img src="../../assets/img/avatar12.png" alt="user image" class="rounded-circle" height="110" width="110">
+          </div>
+          <div class="card-text text-white my-2">
+            <i class="fas fa-circle text-success"></i><span class="h5"> {{currentUser?.firstname}} {{currentUser?.lastname}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="card shadow text-center mybg mt-5">
+        <div class="card-body">
+          <div class="card-text">
+            <i class="fas fa-wallet fa-3x"></i>
+          </div>
+          <div class="card-text">
+            <div class="h4">
+              Your Credits
+            </div>
+          </div>
+          <div class="card-text my-5">
+            <span class="h2">{{this.credits}}&nbsp;<em class="fas fa-coins text-warning"></em></span>
+          </div>
+          <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#exampleReedemCredits"
+        >
+          Reedem Credits
+        </button>
+          <hr>
+          <div class="card-text">
+            <span class="h5">100&nbsp;<em class="fas fa-coins text-warning"></em> = &nbsp;<em
+                class="fas fa-rupee-sign">&nbsp;50</em></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card shadow text-center mt-4">
+      <button
+          type="button"
+          class="btn btn-warning"
+          data-toggle="modal"
+          data-target="#exampleWallet"
+
+
+          (click)="WalletCheck()"
+        >
+         <h5><strong class="text-white">WALLET</strong></h5>
+        </button>
+      </div>
+    </div>
+
+
+
+    <div class="offset-3 col mt-5">
+      <div *ngIf="advts">
+        <div *ngFor="let advt of advts" class="col-md-5 d-inline-block">
+          <div class="card my-3 mr-5 pr-5 bg-white shadow" style="max-width: 540px; cursor: pointer;" (click)="creditCount(advt.id)" data-toggle="modal" data-target="#exampleModalCenter">
+              <div class="row no-gutters">
+                <div class="col-md-4">
+                  <img src="../../assets/img/logo.png" class="card-img" alt="..." height="200px">
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <p class="card-title"><strong>CATEGORY:</strong> {{advt?.categoryadd}}</p>
+                    <p class="card-text"><strong>BRAND:</strong> {{advt?.brand}}</p>
+                    <p class="card-text"><strong>PRODUCT:</strong> {{advt?.product}}</p>
+                    <p class="card-text">
+                      <strong>DESCRIPTION:</strong>
+                      {{advt?.description |  slice:0:15}}
+                      <span *ngIf="advt?.description.length > 15"><a (click)="creditCount(advt.id)">..Read More</a></span>
+                    </p>
+                    <p class="card-text"><small class="text-muted">Date of Publish: {{advt?.dop}}</small></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+</div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle">Advertisement Description</h5>
+          <button type="button" data-toggle="modal" data-target=".bd-example-modal-sm" class="btn btn-danger" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-5">
+                <img src="../../assets/img/logo.png" alt="product image" height="500" width="500">
+            </div>
+            <div class="offset-2 col-5 mt-5 pt-4" id="wrap">
+              <p><strong>CATEGORY:</strong> {{singleAd?.categoryadd}}</p>
+              <p><strong>BRAND:</strong> {{singleAd?.brand}}</p>
+              <p><strong>PRODUCT:</strong> {{singleAd?.product}}</p>
+              <p><strong>DESCRIPTION:</strong> {{singleAd?.description}}</p>
+              <p><strong>DATE OF PUBLISHING:</strong> {{singleAd?.dop}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- <div *ngIf="this.clicklimit >= 1 && this.adclicklimit==0  ">
+  <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="modal-title">
+            </div>
+            <div class="modal-body bg-light">
+                <h4>Congratulations!!!! You have earned 2 credits..<i class="far fa-smile-beam text-warning"></i></h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div> -->
+  <!--<ng-template #exceed>-->
+    <!-- <div *ngIf="this.clicklimit==0 &&
+    this.adclicklimit==0">
+      <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="limitModal">
+        <div class="modal-dialog modal-sm">
+          <div class="modal-content">
+            <div class="modal-header">
+              <div class="modal-title">
+              </div>
+              <div class="modal-body bg-light">
+                  <h4>Sorry...You have already gained maximum credits for today..!!!<i class="far fa-smile-beam text-warning"></i></h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div> -->
+
+    <div>
+      <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+              <div class="modal-header">
+                <div class="modal-title">
+                </div>
+                <div class="modal-body bg-light">
+                    <h4>{{messageStatus}}<i class="far fa-smile-beam text-warning"></i></h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+ <!-- </ng-template>-->
+<!-- Modal for Reedem Credits -->
+   <div
+  class="modal fade"
+  id="exampleReedemCredits"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="reedem">Reedem</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="reedemAmount"
+            placeholder="Enter No. of Credits"
+          />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal"  (click)="reedemFunc()">
+          Done
+        </button>
+      </div>
+    </div>
+  </div>
+   </div>
+
+  <div
+  class="modal fade"
+  id="exampleWallet"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content text-center" id="mbd">
+      <div class="modal-header text-center text-dark">
+        <h3><strong><em>WALLET BALANCE</em></strong></h3>
+      </div>
+      <div class="modal-body text-success">
+        <div class="form-group">
+          <div><h4><strong><i>Your Wallet Balance is&nbsp;:&nbsp;
+            <em class="fas fa-rupee-sign"></em> {{walletBalance}}</i></strong></h4>
+          </div>
+          </div>
+        </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal">
+                Close
+              </button>
+            </div>
+    </div>
+  </div>
+
+</div>
